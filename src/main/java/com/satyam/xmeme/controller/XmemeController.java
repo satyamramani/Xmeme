@@ -48,9 +48,13 @@ public class XmemeController {
     }
 
     @PostMapping(END_POINT)
-    public ResponseEntity<PostMemeResponse> postMemes(@RequestBody UserMeme meme) {
+    public ResponseEntity<?> postMemes(@RequestBody UserMeme meme) {
 
         PostMemeResponse postMemeResponse = memeServicePost.postMemes(meme);
+
+        if(postMemeResponse.getId().equals("empty")) {
+            return new ResponseEntity<>("Duplicate",HttpStatus.CONFLICT);
+        }
 
         return ResponseEntity.ok().body(postMemeResponse);
 
