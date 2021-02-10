@@ -13,10 +13,18 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Provider;
-import javax.swing.text.Document;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+/*
+*This class implements MemeService with two methods findMemeById and findAllMemes
+* @Autowired MongoTemplate
+* @Autowired Provider<ModelMapper>
+* findMemeById takes String id as argument and returns the userMeme containing the same id
+* findAllMemes takes no argument and returns all the memes present in the database.
+
+ */
 
 @Service
 public class MemeServiceImp implements MemeService{
@@ -36,11 +44,14 @@ public class MemeServiceImp implements MemeService{
 
         ModelMapper modelMapper = modelMapperProvider.get();
 
+        //created a query for get meme by id.
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(id));
 
+        //get the meme which have the same id.
         List<MemeEntity> memeEntities = mongoTemplate.find(query,MemeEntity.class);
 
+        //map the response memeEntity to userMeme
         modelMapper.map(memeEntities.get(0),userMeme);
 
         return userMeme;
@@ -54,10 +65,13 @@ public class MemeServiceImp implements MemeService{
 
         ModelMapper modelMapper = modelMapperProvider.get();
 
+        //get list of all memes from database mongodb.
         List<MemeEntity> memeEntities = mongoTemplate.findAll(MemeEntity.class);
 
+        //reverse the memes to get the latest first.
         Collections.reverse(memeEntities);
 
+        //iterate over all memes to map in the userMemes
         for(MemeEntity memeEntity : memeEntities) {
 
             UserMeme userMeme = new UserMeme();
