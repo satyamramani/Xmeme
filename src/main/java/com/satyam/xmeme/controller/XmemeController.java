@@ -2,19 +2,25 @@ package com.satyam.xmeme.controller;
 
 import com.satyam.xmeme.dto.GetMemes;
 import com.satyam.xmeme.dto.PostMemeResponse;
+import com.satyam.xmeme.dto.UpdateMeme;
 import com.satyam.xmeme.dto.UserMeme;
 import com.satyam.xmeme.services.MemeService;
 import com.satyam.xmeme.services.MemeServicePost;
+import com.satyam.xmeme.services.MemeServiceUpdate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.http.HttpResponse;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
 public class XmemeController {
 
     public static final String END_POINT = "/memes";
-    public static final String MEME_API = "/{moduleId}";
+    public static final String MEME_API_ID= "/{moduleId}";
 
     @Autowired
     private MemeService memeService;
@@ -22,7 +28,10 @@ public class XmemeController {
     @Autowired
     private MemeServicePost memeServicePost;
 
-    @GetMapping(END_POINT + MEME_API)
+    @Autowired
+    private MemeServiceUpdate memeServiceUpdate;
+
+    @GetMapping(END_POINT + MEME_API_ID)
     public ResponseEntity<UserMeme> findMeme(@PathVariable String moduleId) {
 
         UserMeme getMemes = memeService.findMemeById(moduleId);
@@ -31,9 +40,9 @@ public class XmemeController {
     }
 
     @GetMapping(END_POINT)
-    public ResponseEntity<GetMemes> findALLMemes() {
+    public ResponseEntity<List<UserMeme>> findAllMemes() {
 
-        GetMemes getMemes = memeService.findAllMemes();
+        List<UserMeme> getMemes = memeService.findAllMemes();
 
         return ResponseEntity.ok().body(getMemes);
     }
@@ -45,6 +54,14 @@ public class XmemeController {
 
         return ResponseEntity.ok().body(postMemeResponse);
 
+    }
+
+    @PatchMapping(END_POINT + MEME_API_ID)
+    public ResponseEntity<?> updateMeme(@RequestBody UpdateMeme meme, @PathVariable String moduleId) {
+
+        memeServiceUpdate.updateMeme(moduleId,meme);
+
+        return ResponseEntity.ok("Resource updated");
     }
 
 }

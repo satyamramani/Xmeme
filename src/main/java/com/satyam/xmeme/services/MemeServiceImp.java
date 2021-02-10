@@ -6,13 +6,16 @@ import com.satyam.xmeme.model.MemeEntity;
 import org.modelmapper.ModelMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Provider;
+import javax.swing.text.Document;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -45,13 +48,15 @@ public class MemeServiceImp implements MemeService{
 
     //to get all memes
     @Override
-    public GetMemes findAllMemes() {
+    public List<UserMeme> findAllMemes() {
 
         List<UserMeme> userMemes = new ArrayList<>();
 
         ModelMapper modelMapper = modelMapperProvider.get();
 
         List<MemeEntity> memeEntities = mongoTemplate.findAll(MemeEntity.class);
+
+        Collections.reverse(memeEntities);
 
         for(MemeEntity memeEntity : memeEntities) {
 
@@ -63,8 +68,6 @@ public class MemeServiceImp implements MemeService{
 
         }
 
-        GetMemes getMemes = new GetMemes(userMemes);
-
-        return getMemes;
+        return userMemes;
     }
 }

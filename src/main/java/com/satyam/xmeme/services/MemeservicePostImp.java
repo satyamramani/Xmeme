@@ -29,15 +29,17 @@ public class MemeservicePostImp implements MemeServicePost{
 
         modelMapper.map(meme,memeEntity);
 
-        List<MemeEntity> memeEntities = mongoTemplate.findAll(MemeEntity.class);
+//        List<MemeEntity> memeEntities = mongoTemplate.findAll(MemeEntity.class);
+//
+//        int count = memeEntities.size()+1;
+//
+//        String id = Integer.toString(count);
 
-        int count = memeEntities.size()+1;
-
-        String id = Integer.toString(count);
-
-        memeEntity.setId(id);
+//        memeEntity.setId(id);
         
         mongoTemplate.save(memeEntity);
+
+        String id = memeEntity.getId();
 
         return new PostMemeResponse(id);
     }
