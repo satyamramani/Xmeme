@@ -21,7 +21,7 @@ import java.util.List;
 public class MemeServiceUpdateImp implements MemeServiceUpdate{
 
     @Autowired
-    MongoTemplate mongoTemplate;
+    private MongoTemplate mongoTemplate;
 
     @Override
     public void updateMeme(String id, UpdateMeme meme) {

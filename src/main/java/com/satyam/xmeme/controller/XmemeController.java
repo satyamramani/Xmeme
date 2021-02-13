@@ -61,7 +61,7 @@ public class XmemeController {
     }
 
     @PatchMapping(END_POINT + MEME_API_ID)
-    public ResponseEntity<?> updateMeme(@RequestBody UpdateMeme meme, @PathVariable String moduleId) {
+    public ResponseEntity<?> updateMemes(@RequestBody UpdateMeme meme, @PathVariable String moduleId) {
 
         memeServiceUpdate.updateMeme(moduleId,meme);
 

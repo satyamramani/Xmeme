@@ -4,5 +4,5 @@ import com.satyam.xmeme.dto.UpdateMeme;
 
 public interface MemeServiceUpdate {
 
-    void updateMeme(String id, UpdateMeme updateMeme);
+    void updateMeme(String id, UpdateMeme updateNewMeme);
 }
