@@ -1,4 +1,5 @@
 # install mongoDB
 
+sudo apt update
 
-apt-get install -y mongodb-org
+sudo apt-get install -y mongodb-org
